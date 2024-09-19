@@ -1,0 +1,13 @@
+streamlit
+google-generativeai
+python-dotenv
+langchain
+PyPDF2
+pdfplumber
+chromadb
+faiss-cpu
+transformers
+torch
+fitz
+langchain_google_genai
+langchain_community
