@@ -11,3 +11,4 @@ faiss-cpu==1.7.3
 # fitz
 langchain_google_genai
 langchain_community
+boto3
