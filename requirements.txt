@@ -5,9 +5,9 @@ langchain
 PyPDF2
 pdfplumber
 chromadb
-faiss-cpu
-transformers
-torch
-fitz
+faiss-cpu==1.7.3
+# transformers
+# torch
+# fitz
 langchain_google_genai
 langchain_community
