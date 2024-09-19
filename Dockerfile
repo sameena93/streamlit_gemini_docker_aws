@@ -21,10 +21,9 @@ COPY requirements.txt .
 # Upgrade pip, install numpy, and then the remaining dependencies
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir numpy && \
-    pip install --no-cache-dir boto3 && \
     pip install --no-cache-dir -r requirements.txt
 # Expose the port for the app
 EXPOSE 8501
 
 #Command to run the app
-CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.allowOrigins=https://Streamlit_Gemini_App.com"]
+CMD ["streamlit", "run", "app.py", "--server.port=8501",  "--server.enableCORS=false"]
