@@ -1,3 +1,5 @@
+import boto3
+from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from io import BytesIO
 import os
@@ -10,9 +12,50 @@ from langchain_community.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
 from PIL import Image
+# Function to retrieve the Google API key from AWS Secrets Manager
+def get_secret():
+    secret_name = "GOOGLE_API_KEY"
+    region_name = "us-east-2"
 
-load_dotenv()
-genai.configure(api_key= os.getenv("GOOGLE_API_KEY"))
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager', region_name=region_name)
+
+    try:
+        # Retrieve the secret value
+        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
+        secret = get_secret_value_response['SecretString']
+        return secret
+    except ClientError as e:
+        # Handle specific errors such as secret not found or permission issues
+        print(f"Failed to retrieve secret: {e}")
+        return None
+
+# Set the Google API key as an environment variable
+def set_secret_as_env_var():
+    secret = get_secret()
+    if secret:
+        os.environ['GOOGLE_API_KEY'] = secret
+    else:
+        print("Google API key not found in Secrets Manager.")
+
+# Set the secret as an environment variable
+set_secret_as_env_var()
+
+# Load environment variables from .env file
+
+
+# load_dotenv()
+# Fetch the API key from environment variable
+google_api_key = os.getenv("GOOGLE_API_KEY")
+
+
+# Configure the API client with the Google API key
+if google_api_key:
+    genai.configure(api_key=google_api_key)
+    print("Google API key successfully loaded and configured.")
+else:
+    print("Failed to load Google API key.")
 
 # MODEL = genai.GenerativeModel('gemini-1.5-flash')
 text_data = []
